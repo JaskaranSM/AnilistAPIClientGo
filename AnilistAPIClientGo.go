@@ -123,7 +123,7 @@ func (a *AnilistClient) QueryMangaByID(id int) (*APIMangaResponse, error) {
 
 func (a *AnilistClient) QueryMangaBySearch(search string) (*APIMangaResponse, error) {
 	manga := NewAPIMangaResponse()
-	data := NewAPIRequestSearch(CharacterQuery, search)
+	data := NewAPIRequestSearch(MangaQuery, search)
 	rawBytes, err := data.Marshall()
 	if err != nil {
 		return manga, err
