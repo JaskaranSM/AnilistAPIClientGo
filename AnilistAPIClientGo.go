@@ -37,6 +37,27 @@ func (a *AnilistClient) QueryAnimeByID(id int) (*APIAnimeResponse, error) {
 	return anime, nil
 }
 
+func (a *AnilistClient) QueryAnimeBySearch(search string) (*APIAnimeResponse, error) {
+	anime := NewAPIAnimeResponse()
+	data := NewAPIRequestSearch(AnimeQuery, search)
+	rawBytes, err := data.Marshall()
+	if err != nil {
+		return anime, err
+	}
+	respBytes, err := a.DoRequest(rawBytes)
+	if err != nil {
+		return anime, err
+	}
+	if IsAPIErrorBytes(respBytes) {
+		return anime, errors.New(string(respBytes))
+	}
+	err = anime.Unmarshall(respBytes)
+	if err != nil {
+		return anime, err
+	}
+	return anime, nil
+}
+
 func (a *AnilistClient) QueryCharacterByID(id int) (*APICharacterResponse, error) {
 	character := NewAPICharacterResponse()
 	data := NewAPIRequestID(CharacterQuery, id)
@@ -79,25 +100,46 @@ func (a *AnilistClient) QueryCharacterBySearch(search string) (*APICharacterResp
 	return character, nil
 }
 
-func (a *AnilistClient) QueryAnimeBySearch(search string) (*APIAnimeResponse, error) {
-	anime := NewAPIAnimeResponse()
-	data := NewAPIRequestSearch(AnimeQuery, search)
+func (a *AnilistClient) QueryMangaByID(id int) (*APIMangaResponse, error) {
+	manga := NewAPIMangaResponse()
+	data := NewAPIRequestID(MangaQuery, id)
 	rawBytes, err := data.Marshall()
 	if err != nil {
-		return anime, err
+		return character, err
 	}
 	respBytes, err := a.DoRequest(rawBytes)
 	if err != nil {
-		return anime, err
+		return manga, err
 	}
 	if IsAPIErrorBytes(respBytes) {
-		return anime, errors.New(string(respBytes))
+		return manga, errors.New(string(respBytes))
 	}
-	err = anime.Unmarshall(respBytes)
+	err = manga.Unmarshall(respBytes)
 	if err != nil {
-		return anime, err
+		return manga, err
 	}
-	return anime, nil
+	return manga, nil
+}
+
+func (a *AnilistClient) QueryMangaBySearch(search string) (*APIMangaResponse, error) {
+	manga := NewAPIMangaResponse()
+	data := NewAPIRequestSearch(CharacterQuery, search)
+	rawBytes, err := data.Marshall()
+	if err != nil {
+		return character, err
+	}
+	respBytes, err := a.DoRequest(rawBytes)
+	if err != nil {
+		return manga, err
+	}
+	if IsAPIErrorBytes(respBytes) {
+		return manga, errors.New(string(respBytes))
+	}
+	err = manga.Unmarshall(respBytes)
+	if err != nil {
+		return manga, err
+	}
+	return manga, nil
 }
 
 func (a *AnilistClient) DoRequest(data []byte) ([]byte, error) {

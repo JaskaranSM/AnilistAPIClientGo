@@ -73,3 +73,29 @@ var CharacterQuery string = `
     }
   }
 `
+
+var MangaQuery string = `
+	query ($id: Int, $search: String) {
+    Media(id: $id, type: MANGA, search: $search) {
+      id
+      title {
+        romaji
+        english
+        native
+      }
+      description
+      startDate {
+        year
+      }
+      type
+      format
+      status
+      siteUrl
+      averageScore
+      genres
+      bannerImage
+      isAdult
+      isFavourite
+    }
+  }
+`

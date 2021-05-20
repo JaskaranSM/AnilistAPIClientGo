@@ -134,6 +134,40 @@ func NewAPICharacterResponse() *APICharacterResponse {
 	return &APICharacterResponse{}
 }
 
+type APIMangaResponse struct {
+	Data struct {
+		Media struct {
+			ID    int `json:"id"`
+			Title struct {
+				Romaji  string `json:"romaji"`
+				English string `json:"english"`
+				Native  string `json:"native"`
+			} `json:"title"`
+			Description string `json:"description"`
+			StartDate   struct {
+				Year int `json:"year"`
+			} `json:"startDate"`
+			Type         string   `json:"type"`
+			Format       string   `json:"format"`
+			Status       string   `json:"status"`
+			SiteURL      string   `json:"siteUrl"`
+			AverageScore int      `json:"averageScore"`
+			Genres       []string `json:"genres"`
+			BannerImage  string   `json:"bannerImage"`
+			IsAdult      bool     `json:"isAdult"`
+			IsFavourite  bool     `json:"isFavourite"`
+		} `json:"Media"`
+	} `json:"data"`
+}
+
+func (a *APIMangaResponse) Unmarshall(data []byte) error {
+	return json.Unmarshal(data, a)
+}
+
+func NewAPIMangaResponse() *APIMangaResponse {
+	return &APIMangaResponse{}
+}
+
 type APIErrorResponse struct {
 	Errors []struct {
 		Message   string `json:"message"`
