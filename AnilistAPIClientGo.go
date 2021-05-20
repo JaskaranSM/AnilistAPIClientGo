@@ -105,7 +105,7 @@ func (a *AnilistClient) QueryMangaByID(id int) (*APIMangaResponse, error) {
 	data := NewAPIRequestID(MangaQuery, id)
 	rawBytes, err := data.Marshall()
 	if err != nil {
-		return character, err
+		return manga, err
 	}
 	respBytes, err := a.DoRequest(rawBytes)
 	if err != nil {
@@ -126,7 +126,7 @@ func (a *AnilistClient) QueryMangaBySearch(search string) (*APIMangaResponse, er
 	data := NewAPIRequestSearch(CharacterQuery, search)
 	rawBytes, err := data.Marshall()
 	if err != nil {
-		return character, err
+		return manga, err
 	}
 	respBytes, err := a.DoRequest(rawBytes)
 	if err != nil {
