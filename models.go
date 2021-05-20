@@ -168,6 +168,34 @@ func NewAPIMangaResponse() *APIMangaResponse {
 	return &APIMangaResponse{}
 }
 
+type APIAnimeAiringResponse struct {
+	Data struct {
+		Media struct {
+			ID       int    `json:"id"`
+			Status   string `json:"status"`
+			Episodes int    `json:"episodes"`
+			Title    struct {
+				Romaji  string `json:"romaji"`
+				English string `json:"english"`
+				Native  string `json:"native"`
+			} `json:"title"`
+			NextAiringEpisode struct {
+				AiringAt        int `json:"airingAt"`
+				TimeUntilAiring int `json:"timeUntilAiring"`
+				Episode         int `json:"episode"`
+			} `json:"nextAiringEpisode"`
+		} `json:"Media"`
+	} `json:"data"`
+}
+
+func (a *APIAnimeAiringResponse) Unmarshall(data []byte) error {
+	return json.Unmarshal(data, a)
+}
+
+func NewAPIAnimeAiringResponse() *APIAnimeAiringResponse {
+	return &APIAnimeAiringResponse{}
+}
+
 type APIErrorResponse struct {
 	Errors []struct {
 		Message   string `json:"message"`

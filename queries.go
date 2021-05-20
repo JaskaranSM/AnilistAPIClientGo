@@ -99,3 +99,24 @@ var MangaQuery string = `
     }
   }
 `
+
+var AnimeAiringQuery string = `
+query ($id: Int, $search: String) {
+  Media(id: $id, type: ANIME, search: $search) {
+    id
+    status
+    episodes
+    title {
+      romaji
+      english
+      native
+    }
+    nextAiringEpisode {
+      airingAt
+      timeUntilAiring
+      episode
+    }
+  }
+}
+
+`

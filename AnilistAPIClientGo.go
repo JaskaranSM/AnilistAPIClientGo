@@ -142,6 +142,48 @@ func (a *AnilistClient) QueryMangaBySearch(search string) (*APIMangaResponse, er
 	return manga, nil
 }
 
+func (a *AnilistClient) QueryAnimeAiringByID(id int) (*APIAnimeAiringResponse, error) {
+	airing := NewAPIAnimeAiringResponse()
+	data := NewAPIRequestID(AnimeAiringQuery, id)
+	rawBytes, err := data.Marshall()
+	if err != nil {
+		return airing, err
+	}
+	respBytes, err := a.DoRequest(rawBytes)
+	if err != nil {
+		return airing, err
+	}
+	if IsAPIErrorBytes(respBytes) {
+		return airing, errors.New(string(respBytes))
+	}
+	err = airing.Unmarshall(respBytes)
+	if err != nil {
+		return airing, err
+	}
+	return airing, nil
+}
+
+func (a *AnilistClient) QueryAnimeAiringBySearch(search string) (*APIAnimeAiringResponse, error) {
+	airing := NewAPIAnimeAiringResponse()
+	data := NewAPIRequestSearch(AnimeAiringQuery, search)
+	rawBytes, err := data.Marshall()
+	if err != nil {
+		return airing, err
+	}
+	respBytes, err := a.DoRequest(rawBytes)
+	if err != nil {
+		return airing, err
+	}
+	if IsAPIErrorBytes(respBytes) {
+		return airing, errors.New(string(respBytes))
+	}
+	err = airing.Unmarshall(respBytes)
+	if err != nil {
+		return airing, err
+	}
+	return airing, nil
+}
+
 func (a *AnilistClient) DoRequest(data []byte) ([]byte, error) {
 	request, err := a.CookRequest(data)
 	if err != nil {
