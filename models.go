@@ -48,43 +48,54 @@ func NewAPIRequestSearch(query string, search string) *APIRequestSearch {
 	}
 }
 
+type Media struct {
+	ID      int  `json:"id"`
+	IsAdult bool `json:"isAdult"`
+	Title   struct {
+		Romaji  string `json:"romaji"`
+		English string `json:"english"`
+		Native  string `json:"native"`
+	} `json:"title"`
+	Description string `json:"description"`
+	StartDate   struct {
+		Year  int `json:"year"`
+		Month int `json:"month"`
+		Day   int `json:"day"`
+	} `json:"startDate"`
+	Episodes    int    `json:"episodes"`
+	Season      string `json:"season"`
+	Type        string `json:"type"`
+	Format      string `json:"format"`
+	Status      string `json:"status"`
+	Duration    int    `json:"duration"`
+	IsFavourite bool   `json:"isFavourite"`
+	SiteURL     string `json:"siteUrl"`
+	Volumes     int    `json:"volumes"`
+	Chapters    int    `json:"chapters"`
+	Studios     struct {
+		Nodes []struct {
+			Name string `json:"name"`
+		} `json:"nodes"`
+	} `json:"studios"`
+	Tags []struct {
+		Name string `json:"name"`
+	} `json:"tags"`
+	Trailer      interface{} `json:"trailer"`
+	AverageScore int         `json:"averageScore"`
+	Genres       []string    `json:"genres"`
+	BannerImage  string      `json:"bannerImage"`
+	Relations    struct {
+		Edges []struct {
+			RelationType string `json:"relationType"`
+			ID           int    `json:"id"`
+			Node         Media  `json:"node"`
+		}
+	}
+}
+
 type APIAnimeResponse struct {
 	Data struct {
-		Media struct {
-			ID      int  `json:"id"`
-			IsAdult bool `json:"isAdult"`
-			Title   struct {
-				Romaji  string `json:"romaji"`
-				English string `json:"english"`
-				Native  string `json:"native"`
-			} `json:"title"`
-			Description string `json:"description"`
-			StartDate   struct {
-				Year  int `json:"year"`
-				Month int `json:"month"`
-				Day   int `json:"day"`
-			} `json:"startDate"`
-			Episodes    int    `json:"episodes"`
-			Season      string `json:"season"`
-			Type        string `json:"type"`
-			Format      string `json:"format"`
-			Status      string `json:"status"`
-			Duration    int    `json:"duration"`
-			IsFavourite bool   `json:"isFavourite"`
-			SiteURL     string `json:"siteUrl"`
-			Studios     struct {
-				Nodes []struct {
-					Name string `json:"name"`
-				} `json:"nodes"`
-			} `json:"studios"`
-			Tags []struct {
-				Name string `json:"name"`
-			} `json:"tags"`
-			Trailer      interface{} `json:"trailer"`
-			AverageScore int         `json:"averageScore"`
-			Genres       []string    `json:"genres"`
-			BannerImage  string      `json:"bannerImage"`
-		} `json:"Media"`
+		Media Media `json:"Media"`
 	} `json:"data"`
 }
 
@@ -94,6 +105,22 @@ func (a *APIAnimeResponse) Unmarshall(data []byte) error {
 
 func NewAPIAnimeResponse() *APIAnimeResponse {
 	return &APIAnimeResponse{}
+}
+
+type APIAnimePagedResponse struct {
+	Data struct {
+		Page struct {
+			Media []Media `json:"media"`
+		} `json:"Page"`
+	} `json:"data"`
+}
+
+func (a *APIAnimePagedResponse) Unmarshall(data []byte) error {
+	return json.Unmarshal(data, a)
+}
+
+func NewAPIAnimePagedResponse() *APIAnimePagedResponse {
+	return &APIAnimePagedResponse{}
 }
 
 type APICharacterResponse struct {
@@ -136,27 +163,7 @@ func NewAPICharacterResponse() *APICharacterResponse {
 
 type APIMangaResponse struct {
 	Data struct {
-		Media struct {
-			ID    int `json:"id"`
-			Title struct {
-				Romaji  string `json:"romaji"`
-				English string `json:"english"`
-				Native  string `json:"native"`
-			} `json:"title"`
-			Description string `json:"description"`
-			StartDate   struct {
-				Year int `json:"year"`
-			} `json:"startDate"`
-			Type         string   `json:"type"`
-			Format       string   `json:"format"`
-			Status       string   `json:"status"`
-			SiteURL      string   `json:"siteUrl"`
-			AverageScore int      `json:"averageScore"`
-			Genres       []string `json:"genres"`
-			BannerImage  string   `json:"bannerImage"`
-			IsAdult      bool     `json:"isAdult"`
-			IsFavourite  bool     `json:"isFavourite"`
-		} `json:"Media"`
+		Media Media `json:"Media"`
 	} `json:"data"`
 }
 
@@ -166,6 +173,22 @@ func (a *APIMangaResponse) Unmarshall(data []byte) error {
 
 func NewAPIMangaResponse() *APIMangaResponse {
 	return &APIMangaResponse{}
+}
+
+type APIMangaPagedResponse struct {
+	Data struct {
+		Page struct {
+			Media []Media `json:"media"`
+		} `json:"Page"`
+	} `json:"data"`
+}
+
+func (a *APIMangaPagedResponse) Unmarshall(data []byte) error {
+	return json.Unmarshal(data, a)
+}
+
+func NewAPIMangaPagedResponse() *APIMangaPagedResponse {
+	return &APIMangaPagedResponse{}
 }
 
 type APIAnimeAiringResponse struct {

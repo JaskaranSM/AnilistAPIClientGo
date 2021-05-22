@@ -58,6 +58,48 @@ func (a *AnilistClient) QueryAnimeBySearch(search string) (*APIAnimeResponse, er
 	return anime, nil
 }
 
+func (a *AnilistClient) QueryPagedAnimeBySearch(search string) (*APIAnimePagedResponse, error) {
+	anime := NewAPIAnimePagedResponse()
+	data := NewAPIRequestSearch(AnimeQueryPaged, search)
+	rawBytes, err := data.Marshall()
+	if err != nil {
+		return anime, err
+	}
+	respBytes, err := a.DoRequest(rawBytes)
+	if err != nil {
+		return anime, err
+	}
+	if IsAPIErrorBytes(respBytes) {
+		return anime, errors.New(string(respBytes))
+	}
+	err = anime.Unmarshall(respBytes)
+	if err != nil {
+		return anime, err
+	}
+	return anime, nil
+}
+
+func (a *AnilistClient) QueryPagedMangaBySearch(search string) (*APIMangaPagedResponse, error) {
+	manga := NewAPIMangaPagedResponse()
+	data := NewAPIRequestSearch(MangaQueryPaged, search)
+	rawBytes, err := data.Marshall()
+	if err != nil {
+		return manga, err
+	}
+	respBytes, err := a.DoRequest(rawBytes)
+	if err != nil {
+		return manga, err
+	}
+	if IsAPIErrorBytes(respBytes) {
+		return manga, errors.New(string(respBytes))
+	}
+	err = manga.Unmarshall(respBytes)
+	if err != nil {
+		return manga, err
+	}
+	return manga, nil
+}
+
 func (a *AnilistClient) QueryCharacterByID(id int) (*APICharacterResponse, error) {
 	character := NewAPICharacterResponse()
 	data := NewAPIRequestID(CharacterQuery, id)
