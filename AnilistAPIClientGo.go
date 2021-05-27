@@ -142,6 +142,27 @@ func (a *AnilistClient) QueryCharacterBySearch(search string) (*APICharacterResp
 	return character, nil
 }
 
+func (a *AnilistClient) QueryPagedCharacterBySearch(search string) (*APICharacterPagedResponse, error) {
+	character := NewAPICharacterPagedResponse()
+	data := NewAPIRequestSearch(CharacterQueryPaged, search)
+	rawBytes, err := data.Marshall()
+	if err != nil {
+		return character, err
+	}
+	respBytes, err := a.DoRequest(rawBytes)
+	if err != nil {
+		return character, err
+	}
+	if IsAPIErrorBytes(respBytes) {
+		return character, errors.New(string(respBytes))
+	}
+	err = character.Unmarshall(respBytes)
+	if err != nil {
+		return character, err
+	}
+	return character, nil
+}
+
 func (a *AnilistClient) QueryMangaByID(id int) (*APIMangaResponse, error) {
 	manga := NewAPIMangaResponse()
 	data := NewAPIRequestID(MangaQuery, id)

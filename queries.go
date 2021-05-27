@@ -123,6 +123,7 @@ var CharacterQuery string = `
         last
         full
         native
+        alternative
       }
       siteUrl
       image {
@@ -154,6 +155,7 @@ query ($id: Int, $search: String) {
       last
       full
       native
+      alternative
     }
     siteUrl
     image {

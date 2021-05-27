@@ -123,33 +123,36 @@ func NewAPIAnimePagedResponse() *APIAnimePagedResponse {
 	return &APIAnimePagedResponse{}
 }
 
+type Character struct {
+	ID   int `json:"id"`
+	Name struct {
+		First       string   `json:"first"`
+		Last        string   `json:"last"`
+		Full        string   `json:"full"`
+		Native      string   `json:"native"`
+		Alternative []string `json:"alternative"`
+	} `json:"name"`
+	SiteURL string `json:"siteUrl"`
+	Image   struct {
+		Large string `json:"large"`
+	} `json:"image"`
+	Media struct {
+		Edges []struct {
+			CharacterRole string `json:"characterRole"`
+			Node          struct {
+				ID    int `json:"id"`
+				Title struct {
+					Romaji string `json:"romaji"`
+				} `json:"title"`
+			} `json:"node"`
+		} `json:"edges"`
+	} `json:"media"`
+	Description string `json:"description"`
+}
+
 type APICharacterResponse struct {
 	Data struct {
-		Character struct {
-			ID   int `json:"id"`
-			Name struct {
-				First  string `json:"first"`
-				Last   string `json:"last"`
-				Full   string `json:"full"`
-				Native string `json:"native"`
-			} `json:"name"`
-			SiteURL string `json:"siteUrl"`
-			Image   struct {
-				Large string `json:"large"`
-			} `json:"image"`
-			Media struct {
-				Edges []struct {
-					CharacterRole string `json:"characterRole"`
-					Node          struct {
-						ID    int `json:"id"`
-						Title struct {
-							Romaji string `json:"romaji"`
-						} `json:"title"`
-					} `json:"node"`
-				} `json:"edges"`
-			} `json:"media"`
-			Description string `json:"description"`
-		} `json:"Character"`
+		Character Character `json:"Character"`
 	} `json:"data"`
 }
 
@@ -159,6 +162,22 @@ func (a *APICharacterResponse) Unmarshall(data []byte) error {
 
 func NewAPICharacterResponse() *APICharacterResponse {
 	return &APICharacterResponse{}
+}
+
+type APICharacterPagedResponse struct {
+	Data struct {
+		Page struct {
+			Characters []Character `json:"characters"`
+		} `json:"Page"`
+	} `json:"data"`
+}
+
+func (a *APICharacterPagedResponse) Unmarshall(data []byte) error {
+	return json.Unmarshal(data, a)
+}
+
+func NewAPICharacterPagedResponse() *APICharacterPagedResponse {
+	return &APICharacterPagedResponse{}
 }
 
 type APIMangaResponse struct {
