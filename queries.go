@@ -188,6 +188,8 @@ query ($id: Int, $search: String) {
     description
     startDate {
       year
+      month
+      day
     }
     type
     format
@@ -229,6 +231,8 @@ query ($id: Int, $search: String = "high school dxd") {
       description
       startDate {
         year
+        month
+        day
       }
       type
       format
